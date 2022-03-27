@@ -1,0 +1,47 @@
+from math import dist
+from re import I
+import numpy as np 
+
+
+
+
+
+
+class KNN_clf: 
+    def __init__(self, K):
+        self.K = K
+        # Initialize required parameters 
+        self.norm_type = None
+        self.X = None
+        self.y = None
+
+    def fit(self, X_train, y_train): 
+        self.X = X_train 
+        self.y = y_train
+    
+    def norm(self, arry): 
+        if self.norm_type == 'L1': 
+            dist = np.absolute(self.X - arry)
+        elif self.norm_type == 'L2': 
+            dist = np.sqrt((self.X - arry)**2)
+        else: 
+            print("Need to select one of the Norm type")
+        return dist.T # To fit the dimension of y_test  
+
+    def predict(self, X_test, y_test, norm_type): 
+        self.norm_type = norm_type 
+        dist = self.norm(X_test)
+        dist_sort_index = np.argsort(dist)
+        y_test_sort = y_test[dist_sort_index]
+
+        result = np.mean(y_test_sort[0:self.K])
+
+        return result
+
+        
+        
+
+    
+
+        
+    
